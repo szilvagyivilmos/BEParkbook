@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var n =0
+
+           $("button").click(function(){
+
+                $.ajax({url: "http://localhost:8000/api/parks", success: function(result){
+
+                    $("#name").text(result[n%result.length]['name']);
+                    $("#star").text(result[n%result.length]['star']);
+
+                }});
+               n++
+          });
+        });
+    </script>
+</head>
+<body>
+
+<div>
+   <H2>Name:</H2>
+
+    <h3 id="name">Hotel</h3>
+
+    <h4>Quality</h4>
+
+    <h4 id="star">x</h4>
+
+
+</div>
+
+<button>Next</button>
+
+</body>
+</html>

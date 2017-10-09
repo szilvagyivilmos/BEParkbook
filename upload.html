@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Upload</title>
+<script>
+    $(document).ready(function(){
+
+
+        $("button").click(function(){
+
+            var iname = $("#name").val();
+            var istar = $("#star").val();
+            var icomm = $("#comm").val();
+
+           // console.log(iname, istar, icomm)
+            var body=JSON.stringify({name: iname,star:istar,comm:icomm })
+          //  console.log(body+"asd")
+            $.ajax({
+                type: 'POST',
+                data:{'name': iname,'star':istar,'comm':icomm },
+                url: "http://localhost:8000/api/addhotels",
+
+
+                success: function(result){ $("span").text(result['message'])}
+            })
+
+        });
+    });
+
+
+
+
+</script>
+
+</head>
+<body>
+<h1>Upload new hotels</h1>
+Name:<input type="text" id="name"><br/>
+Quality:<input type="number" id="star"  min="1" max="5"><br/>
+Comment:<input type="text" id="comm"><br>
+<button>Upload</button><br>
+
+<span></span>
+
+</body>
+</html>
