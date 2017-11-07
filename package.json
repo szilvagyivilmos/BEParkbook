@@ -9,15 +9,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.18.1",
+    "body-parser": "^1.18.2",
     "express": "^4.15.4",
     "gulp": "^3.9.1",
     "gulp-nodemon": "^2.2.1",
     "mongoose": "^4.11.11",
     "pg": "^7.3.0",
-    "pg-promise": "^6.7.1",  
+    "pg-promise": "^6.7.1",
     "swagger": "*",
-    "swagger-tools":"*",
-    "swagger-express-mw":"^0.7.0"
+    "swagger-express-mw": "^0.7.0",
+    "swagger-tools": "*"
+  },
+  "devDependencies": {
+    "eslint": "^4.8.0",
+    "eslint-plugin-react": "^7.4.0"
   }
 }

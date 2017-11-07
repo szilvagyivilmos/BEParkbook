@@ -1,0 +1,20 @@
+swagger: "2.0"
+info:
+  title: Parkbook API
+  version: v2
+host: localhost:3000
+paths:
+  /park:
+    get:
+      summary: Get free spots
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+             properties:
+                lat:
+                  type: number
+                lon:
+                  type: number
