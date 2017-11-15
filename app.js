@@ -20,21 +20,34 @@ client.connect();
 
 
 parkRouter.route('/park').get(function(req,res){
-     console.log("asd")
- 
-     const query= client.query("select id as key, st_x(ST_Transform(loc,4326)) as latitude,st_y(ST_Transform(loc,4326)) as longitude from spot limit 5;").then(function(result,err){
+  
+    const query= client.query("select id as key, st_x(ST_Transform(loc,4326)) as latitude,st_y(ST_Transform(loc,4326)) as longitude from spot;")
+    .then(function(result,err){
+
 
         if(err) console.log(err)
         res.send(result['rows'])
-     }).catch((error) => {
+    }).catch((error) => {
         console.log(error,'Promise error');
     }) 
- })
+})
 
- parkRouter.route('/addpark').post(function(req,res){
+parkRouter.route('/parkinrange').post(function(req,res){
+   
+    const query= client.query(  "select id as key, st_x(ST_Transform(loc,4326)) as latitude,st_y(ST_Transform(loc,4326)) as longitude from spot where ST_DWithin(loc, ST_SetSRID(ST_MakePoint($1,$2), 4326), $3);"
+    , [req.body.lat,req.body.lon,req.body.accuracy]) 
+    .then(function(result){
+        console.log(JSON.stringify(result.rows))
+        res.send(result['rows'])
+    }).catch((error) => {
+        console.log(error,'Promise error');
+    }) 
+})
+
+parkRouter.route('/addpark').post(function(req,res){
     if(req.body){
         client.query('insert into spot(freed,loc,uploaded_by) values(now(),st_setsrid(st_makepoint($1,$2),4326),$3);',
-        [req.body.lon,req.body.lat,req.body.uploaded_by]) 
+        [req.body.lat,req.body.lon,req.body.uploaded_by]) 
         .then(function() {
             res.status(200).json({
                     status: 'success',
@@ -47,7 +60,7 @@ parkRouter.route('/park').get(function(req,res){
     }else{
         console.log("body doesnt exists")
     }
- })
+})
 
 parkRouter.route('/parks').get(function(req,res){
     console.log("asds")
