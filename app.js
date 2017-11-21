@@ -34,8 +34,12 @@ parkRouter.route('/park').get(function(req,res){
 
 parkRouter.route('/parkinrange').post(function(req,res){
    
-    const query= client.query(  "select id as key, st_x(ST_Transform(loc,4326)) as latitude,st_y(ST_Transform(loc,4326)) as longitude from spot where ST_DWithin(loc, ST_SetSRID(ST_MakePoint($1,$2), 4326), $3);"
-    , [req.body.lat,req.body.lon,req.body.accuracy]) 
+    const query= client.query(  "SELECT id AS key, st_x(ST_Transform(loc,4326)) AS latitude,st_y(ST_Transform(loc,4326)) AS longitude "  +
+                                "FROM spot "    +
+                                "where ST_DWithin(loc, ST_SetSRID(ST_MakePoint($1,$2), 4326), $3) "  +
+                                "ORDER BY  ST_Distance(loc,ST_SetSRID(ST_MakePoint(0,0), 4326)) DESC "+
+                                "LIMIT $4; "
+    , [req.body.lat,req.body.lon,req.body.accuracy,req.body.limit]) 
     .then(function(result){
         console.log(JSON.stringify(result.rows))
         res.send(result['rows'])
