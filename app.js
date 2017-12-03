@@ -23,7 +23,7 @@ parkRouter.route('/park').get(function(req,res){
   
     const query= client.query("select id as key, st_x(ST_Transform(loc,4326)) as latitude,st_y(ST_Transform(loc,4326)) as longitude from spot;")
     .then(function(result,err){
-
+        
 
         if(err) console.log(err)
         res.send(result['rows'])
@@ -67,12 +67,18 @@ parkRouter.route('/addpark').post(function(req,res){
 })
 
 parkRouter.route('/parks').get(function(req,res){
-    console.log("asds")
-
+    
     const query= client.query("select * from spot;").then(function(result,err){
           res.send(result['rows'])
     })
 })
+
+parkRouter.route('/delspot').post(function(req,res){    
+    const query= client.query("delete from spot where id=$1",[req.body.id]).then(function(result,err){
+          res.send({"res":"deleted"})
+    })
+})
+
 
 app.route('/park').get(function(req,res){
    res.sendfile('index.html')
